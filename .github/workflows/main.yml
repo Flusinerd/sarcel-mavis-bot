@@ -1,0 +1,184 @@
+# This is a basic workflow to help you get started with Actions
+
+name: PR Main
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # Lint workspace
+  lint_workspace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - uses: actions/setup-node@v2
+        name: 'Setup Node'
+        with:
+          node-version: ${{env.NODE_VERSION}}
+          cache: 'yarn'
+          
+      - run: yarn install
+        name: 'Install dependencies'
+      
+      - uses: mansagroup/nrwl-nx-action@v2.1.0
+        name: Lint workspace
+        with:
+          targets: lint
+          parallel: 'true'
+          nxCloud: 'true'
+
+  # Lint affected
+  lint:
+    runs-on: ubuntu-latest
+    needs: [lint_workspace]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - uses: actions/setup-node@v2
+        name: 'Setup Node'
+        with:
+          node-version: ${{env.NODE_VERSION}}
+          cache: 'yarn'
+          
+      - run: yarn install
+        name: 'Install dependencies'
+      
+      - uses: mansagroup/nrwl-nx-action@v2.1.0
+        name: Lint affected
+        with:
+          targets: lint
+          parallel: 'true'
+          nxCloud: 'true'
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{secrets.NX_CLOUD_ACCESS_TOKEN}}
+          
+  # Build affected
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint_workspace]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - uses: actions/setup-node@v2
+        name: 'Setup Node'
+        with:
+          node-version: ${{env.NODE_VERSION}}
+          cache: 'yarn'
+          
+      - run: yarn install
+        name: 'Install dependencies'
+      
+      - uses: mansagroup/nrwl-nx-action@v2.1.0
+        name: Build affected
+        with:
+          targets: build
+          args: --configuration=production
+          parallel: 'true'
+          nxCloud: 'true'
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{secrets.NX_CLOUD_ACCESS_TOKEN}}
+          
+      - name: Save build output
+        uses: actions/upload-artifact@v2
+        with:
+          name: build_output
+          path: dist
+
+  # Test affected
+  test:
+    runs-on: ubuntu-latest
+    needs: [lint_workspace]
+
+    # Service containers
+    services:
+      # Testing DB
+      postgres:
+        image: postgres:14-alpine
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - uses: actions/setup-node@v2
+        name: 'Setup Node'
+        with:
+          node-version: ${{env.NODE_VERSION}}
+          cache: 'yarn'
+          
+      - run: yarn install
+        name: 'Install dependencies'
+      
+      - uses: mansagroup/nrwl-nx-action@v2.1.0
+        name: Test affected
+        with:
+          targets: test
+          parallel: 'true'
+          nxCloud: 'true'
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{secrets.NX_CLOUD_ACCESS_TOKEN}}
+          
+  # Deploy affected
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [lint, build, test]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - uses: actions/setup-node@v2
+        name: 'Setup Node'
+        with:
+          node-version: ${{env.NODE_VERSION}}
+          cache: 'yarn'
+          
+      - run: yarn install
+        name: 'Install dependencies'
+      
+      - name: Get build output
+        continue-on-error: true
+        uses: actions/download-artifact@v2
+        with:
+          name: build_output
+          path: dist
+      
+      - uses: mansagroup/nrwl-nx-action@v2.1.0
+        name: Deploy affected
+        with:
+          targets: deploy
+          parallel: 'true'
+          nxCloud: 'true'
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{secrets.NX_CLOUD_ACCESS_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.CI_PAT }}
+          
+env:
+  NODE_VERSION: 16

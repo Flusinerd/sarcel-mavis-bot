@@ -1,0 +1,97 @@
+{
+  "projectType": "application",
+  "root": "apps/sarcel-mavis",
+  "sourceRoot": "apps/sarcel-mavis/src",
+  "prefix": "sarcel-mavis",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/sarcel-mavis",
+        "index": "apps/sarcel-mavis/src/index.html",
+        "main": "apps/sarcel-mavis/src/main.ts",
+        "polyfills": "apps/sarcel-mavis/src/polyfills.ts",
+        "tsConfig": "apps/sarcel-mavis/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/sarcel-mavis/src/favicon.ico",
+          "apps/sarcel-mavis/src/assets"
+        ],
+        "styles": ["apps/sarcel-mavis/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/sarcel-mavis/src/environments/environment.ts",
+              "with": "apps/sarcel-mavis/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "sarcel-mavis:build:production"
+        },
+        "development": {
+          "browserTarget": "sarcel-mavis:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "proxyConfig": "apps/sarcel-mavis/proxy.conf.json"
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "sarcel-mavis:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/sarcel-mavis/src/**/*.ts",
+          "apps/sarcel-mavis/src/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/sarcel-mavis"],
+      "options": {
+        "jestConfig": "apps/sarcel-mavis/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
