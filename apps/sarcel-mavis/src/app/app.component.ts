@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Message } from '@sarcel-mavis/api-interfaces';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'sarcel-mavis-root',
@@ -8,6 +7,9 @@ import { Message } from '@sarcel-mavis/api-interfaces';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  hello$ = this.http.get<Message>('/api/hello');
-  constructor(private http: HttpClient) {}
+  constructor(private authService: AuthService) {}
+
+  redirectToDiscord() {
+    window.location.href = this.authService.generateAuthUrl();
+  }
 }
