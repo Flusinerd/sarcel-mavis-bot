@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  height: 100%;
+  background-color: var(--dark-500);
+
+  color: var(--dark-300);
+
+  width: 100%;
+}
+
+#sidebar-content {
+  flex: 1;
+}

@@ -1,0 +1,23 @@
+:host {
+  display: grid;
+  grid-template-columns: minmax(350px, 1fr) minmax(500px, 2fr);
+
+
+  // If it fits on one line, it will be one line.
+  // If it doesn't fit on one line, it will be two lines.
+  padding: 1rem 1.5rem;
+  //height: 100%;
+  grid-column-gap: 2rem;
+  grid-row-gap: 1rem;
+}
+
+@media screen and (max-width: 1200px) {
+  :host {
+    grid-template-columns: 1fr;
+  }
+}
+
+.first-step {
+  display: flex;
+  flex-direction: column;
+}

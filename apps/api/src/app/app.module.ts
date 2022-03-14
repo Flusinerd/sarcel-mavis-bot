@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getMetadataArgsStorage } from 'typeorm';
@@ -6,6 +6,9 @@ import { DiscordModule } from '../discord/discord.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AccessTokenMiddleware } from '../access-token.middleware';
+import { AudioFilesModule } from '../audio-files/audio-files.module';
+import { BotModule } from '../bot/bot.module';
 
 @Module({
   imports: [
@@ -27,8 +30,18 @@ import { AppService } from './app.service';
       inject: [ConfigService],
     }),
     DiscordModule,
+    AudioFilesModule,
+    BotModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AccessTokenMiddleware)
+      .forRoutes('discord');
+  }
+
+}

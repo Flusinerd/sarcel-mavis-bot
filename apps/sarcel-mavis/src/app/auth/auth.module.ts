@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthRoutingModule } from './auth-routing.module';
 import { AuthComponent } from './auth.component';
 import { CallbackComponent } from './callback/callback.component';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   { path: '', component: AuthComponent }
@@ -18,7 +19,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     AuthRoutingModule,
-    RouterModule.forChild(routes)
+    SharedModule,
+    RouterModule.forChild(routes),
   ]
 })
 export class AuthModule { }

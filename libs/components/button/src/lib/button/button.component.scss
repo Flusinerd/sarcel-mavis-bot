@@ -1,0 +1,25 @@
+button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #fff;
+  color: var(--ligh-500);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: #eee;
+  }
+
+  &.primary{
+    background-color: var(--primary);
+  }
+
+  &.primary:hover{
+    background-color: var(--teal-400);
+  }
+
+  &.primary:active{
+    background-color: var(--teal-600);
+  }
+}

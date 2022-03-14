@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+  --dark-0: #e9eaea;
+  --dark-100: #d3d4d6;
+  --dark-200: #a7a9ad;
+  --dark-300: #7a7e83;
+  --dark-400: #4e535a;
+  --dark-500: #222831;
+  --dark-600: #1b2027;
+  --dark-700: #14181d;
+  --dark-800: #0e1014;
+  --dark-900: #07080a;
+
+  --violet-0: #e6d7ed;
+  --violet-100: #d5bde1;
+  --violet-200: #ccb0db;
+  --violet-300: #bb95cf;
+  --violet-400: #aa7bc3;
+  --violet-500: #88629c;
+  --violet-600: #664a75;
+  --violet-700: #44314e;
+  --violet-800: #221927;
+  --violet-900: #110c13;
+
+  --gray-0: #ebeced;
+  --gray-100: #c4c5c8;
+  --gray-200: #9c9fa3;
+  --gray-300: #888b90;
+  --gray-400: #61656b;
+  --gray-500: #393e46;
+  --gray-600: #2e3238;
+  --gray-700: #22252a;
+  --gray-800: #17191c;
+  --gray-900: #0b0c0e;
+
+  --red-0: #f7ebed;
+  --red-100: #e8c4c8;
+  --red-200: #d99da4;
+  --red-300: #c9757f;
+  --red-400: #ba4e5a;
+  --red-500: #b23a48;
+  --red-600: #8e2e3a;
+  --red-700: #6b232b;
+  --red-800: #47171d;
+  --red-900: #240c0e;
+
+  --teal-0: #e6f7f8;
+  --teal-100: #b3e6e9;
+  --teal-200: #80d6da;
+  --teal-300: #4dc6cb;
+  --teal-400: #1dc2c2;
+  --teal-500: #00adb5;
+  --teal-600: #008a91;
+  --teal-700: #00686d;
+  --teal-800: #004548;
+  --teal-900: #002324;
+
+  --light-0: #ffffff;
+  --light-100: #fdfdfd;
+  --light-200: #fcfcfc;
+  --light-300: #f7f7f7;
+  --light-400: #f1f1f1;
+  --light-500: #eeeeee;
+  --light-600: #bebebe;
+  --light-700: #8f8f8f;
+  --light-800: #5f5f5f;
+  --light-900: #303030;
+
+  --primary: var(--teal-500);
+  --primary-dark: var(--teal-700);
+  --primary-light: var(--teal-100);
+
+  --secondary: var(--violet-500);
+  --secondary-dark: var(--violet-700);
+  --secondary-light: var(--violet-200);
+
+  --success: #4E9F3D;
+  --warning: #FFCD00;
+  --danger: var(--red-400);
+
+  --background: var(--gray-500);
+  --text: var(--light-500);
+
+  --primary-filter: invert(46%) sepia(97%) saturate(1653%) hue-rotate(147deg) brightness(92%) contrast(106%);
+  --gray-300-filter: invert(50%) sepia(6%) saturate(314%) hue-rotate(173deg) brightness(96%) contrast(87%);
+
+  box-sizing: border-box;
+}
+
+/*CSS RESET*/
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Set core root defaults */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+body {
+  color: var(--text);
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.relative {
+  position: relative;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+button.icon-button {
+  background: none;
+  border: none;
+  padding: 0.25rem 0.5rem;
+}
+
+button.icon-button > img {
+  width: 1rem;
+}
+
+.w-5{
+  width: 5rem !important;
+}
+
+sarcel-mavis-sidebar-header.sidebar-closed,
+sarcel-mavis-sidebar-accordion.sidebar-closed
+{
+  justify-content: center !important;
+}
+

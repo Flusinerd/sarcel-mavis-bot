@@ -1,0 +1,12 @@
+:host {
+  box-sizing: border-box;
+  li {
+    margin-left: 4.35rem;
+  }
+  transition: background 200ms ease-in-out;
+}
+
+:host:hover {
+  cursor: pointer;
+  background: var(--dark-600);
+}

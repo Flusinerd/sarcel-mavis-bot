@@ -1,0 +1,58 @@
+:host {
+  display: block;
+  width: 100%;
+
+  a {
+    height: 2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    color: var(--gray-300);
+    font-weight: 600;
+    font-size: 1.25rem;
+    text-decoration: none;
+
+    transition: color 0.2s ease-in-out;
+
+    img {
+      height: 1.5rem;
+      width: 1.5rem;
+      margin-right: 1rem;
+      margin-left: 1rem;
+      filter: var(--gray-300-filter);
+
+      transition: filter 200ms ease-in-out;
+    }
+  }
+
+  a:hover {
+    color: var(--primary);
+
+    background: var(--dark-600);
+
+    img {
+      filter: var(--primary-filter)
+    }
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.open-container{
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  img {
+    height: 1rem !important;
+    width: 1rem !important;
+  }
+}
+

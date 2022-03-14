@@ -15,7 +15,15 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@sarcel-mavis/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@sarcel-mavis/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@sarcel-mavis/components": ["libs/components/src/index.ts"],
+      "@sarcel-mavis/components/button": [
+        "libs/components/button/src/index.ts"
+      ],
+      "@sarcel-mavis/components/input": ["libs/components/input/src/index.ts"],
+      "@sarcel-mavis/components/nav-bar": [
+        "libs/components/nav-bar/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

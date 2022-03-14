@@ -1,0 +1,66 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Upload Sound</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <mat-stepper #stepper>
+      <mat-step errorMessage="File is required.">
+        <ng-template matStepLabel>Upload file</ng-template>
+        <div style='display: flex; flex-direction: column; align-items: flex-start'>
+          <div>
+            <input type='file' required style='display: none' #fileInput (change)='onFileChange($event)'>
+            <button mat-raised-button color='primary' (click)='fileInput.click()'>
+              <mat-icon>file_upload</mat-icon>
+              <span>Select file</span>
+            </button>
+          </div>
+        </div>
+      </mat-step>
+      <mat-step [stepControl]="fileForm" errorMessage="Address is required.">
+        <form [formGroup]="fileForm" class='vertical-form'>
+          <ng-template matStepLabel>Choose name and command</ng-template>
+          <mat-form-field appearance="fill" style='width: 100%'>
+            <mat-label>Filename (without extension)</mat-label>
+            <input matInput placeholder="hello" formControlName="fileName"
+                   required>
+          </mat-form-field>
+          <mat-form-field appearance="fill" style='width: 100%'>
+            <mat-label>command</mat-label>
+            <input matInput placeholder="hello" formControlName="command"
+                   required>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Choose categories</ng-template>
+        <form [formGroup]="categoryForm">
+          <mat-form-field appearance="fill">
+          <mat-label>Categories</mat-label>
+            <mat-select formControlName='categories' multiple>
+              <mat-option *ngFor="let category of $categories | async" [value]="category">{{category.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Upload</ng-template>
+        <button mat-button (click)='createFile()' *ngIf='!uploading && !uploadComplete'>Upload</button>
+        <mat-progress-bar mode='determinate' [value]='uploadProgress' *ngIf='uploadComplete === false'></mat-progress-bar>
+        <div *ngIf='uploadComplete === true'>
+          <p>Upload complete</p>
+        </div>
+      </mat-step>
+    </mat-stepper>
+
+  </mat-card-content>
+</mat-card>

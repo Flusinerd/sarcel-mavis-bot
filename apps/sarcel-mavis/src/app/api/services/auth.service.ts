@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { AccessTokenResponseDto } from '../models/access-token-response-dto';
+import { RefreshTokenRequestDto } from '../models/refresh-token-request-dto';
 import { TokenExchangeRequestDto } from '../models/token-exchange-request-dto';
 
 @Injectable({
@@ -73,6 +74,60 @@ export class AuthService extends BaseService {
   }): Observable<AccessTokenResponseDto> {
 
     return this.exchangeToken$Response(params).pipe(
+      map((r: StrictHttpResponse<AccessTokenResponseDto>) => r.body as AccessTokenResponseDto)
+    );
+  }
+
+  /**
+   * Path part for operation refreshToken
+   */
+  static readonly RefreshTokenPath = '/api/discord/auth/token/refresh';
+
+  /**
+   * Refresh a Discord OAuth2 access token.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `refreshToken()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  refreshToken$Response(params: {
+    body: RefreshTokenRequestDto
+  }): Observable<StrictHttpResponse<AccessTokenResponseDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, AuthService.RefreshTokenPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<AccessTokenResponseDto>;
+      })
+    );
+  }
+
+  /**
+   * Refresh a Discord OAuth2 access token.
+   *
+   *
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `refreshToken$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  refreshToken(params: {
+    body: RefreshTokenRequestDto
+  }): Observable<AccessTokenResponseDto> {
+
+    return this.refreshToken$Response(params).pipe(
       map((r: StrictHttpResponse<AccessTokenResponseDto>) => r.body as AccessTokenResponseDto)
     );
   }

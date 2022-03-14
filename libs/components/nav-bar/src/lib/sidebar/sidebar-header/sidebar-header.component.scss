@@ -1,0 +1,58 @@
+:host{
+  padding: 1rem;
+  color: var(--dark-0);
+  background: var(--dark-600);
+  margin-bottom: 0.5rem;
+
+  width: 100%;
+
+  min-height: 64px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  h1 {
+    position: relative;
+    z-index: 0;
+    font-size: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    margin: 0;
+    width: 100%;
+    opacity: 1;
+    transition: width 0.3s ease-in-out, opacity 0.1s ease-in-out;
+    white-space: nowrap;
+  }
+
+  h1.closed {
+    opacity: 0;
+    z-index: -1;
+    width: 0;
+    padding: 0;
+  }
+
+  button {
+    position: relative;
+    z-index: 0;
+    img {
+      filter: invert(33%) sepia(10%) saturate(385%) hue-rotate(176deg) brightness(92%) contrast(93%);
+      transform: rotate(180deg);
+      transition:
+        filter 200ms ease-in-out, transform .2s ease-in-out;
+    }
+  }
+
+  button:hover {
+    cursor: pointer;
+    img {
+      filter: invert(72%) sepia(75%) saturate(4560%) hue-rotate(142deg) brightness(87%) contrast(101%);
+    }
+  }
+
+  button.closed{
+    img {
+      transform: rotate(0deg);
+    }
+  }
+}

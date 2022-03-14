@@ -1,0 +1,83 @@
+{
+  "projectType": "library",
+  "root": "libs/components",
+  "sourceRoot": "libs/components/src",
+  "prefix": "sarcel-mavis",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["dist/libs/components"],
+      "options": {
+        "project": "libs/components/ng-package.json",
+        "tailwindConfig": "libs/components/tailwind.config.js"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/components/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/components/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/components"],
+      "options": {
+        "jestConfig": "libs/components/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/components/src/**/*.ts",
+          "libs/components/src/**/*.html",
+          "libs/components/input/**/*.ts",
+          "libs/components/input/**/*.html",
+          "libs/components/button/**/*.ts",
+          "libs/components/button/**/*.html",
+          "libs/components/nav-bar/**/*.ts",
+          "libs/components/nav-bar/**/*.html"
+        ]
+      }
+    },
+    "storybook": {
+      "executor": "@nrwl/storybook:storybook",
+      "options": {
+        "uiFramework": "@storybook/angular",
+        "port": 4400,
+        "config": {
+          "configFolder": "libs/components/.storybook"
+        },
+        "projectBuildConfig": "components"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@nrwl/storybook:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "uiFramework": "@storybook/angular",
+        "outputPath": "dist/storybook/components",
+        "config": {
+          "configFolder": "libs/components/.storybook"
+        },
+        "styles": ["libs/components/import-tailwind.scss"],
+        "projectBuildConfig": "components"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

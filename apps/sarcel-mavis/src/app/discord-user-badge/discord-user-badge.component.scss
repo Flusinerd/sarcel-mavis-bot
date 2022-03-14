@@ -1,0 +1,36 @@
+:host {
+  color: #f8f9fa;
+  display: inline-flex;
+  justify-content : center;
+  align-items: center;
+  height: 100%;
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+  border: 1px solid var(--primary);
+  border-radius: 5px;
+  padding: 0.3rem 1rem;
+}
+
+img{
+  border-radius: 32px;
+  margin-left: 12px;
+}
+
+#name{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  span{
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .discriminator {
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: #ccc;
+  }
+}

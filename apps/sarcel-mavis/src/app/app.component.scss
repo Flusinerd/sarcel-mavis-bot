@@ -1,23 +1,38 @@
-#discord-login-btn {
-  background-color: #7289DA;
-  color: #fff;
+:host{
+  display: block;
+}
 
-  border-radius: 5px;
-  border: none;
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 
-  padding: 6px 12px;
+.is-mobile .toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+}
 
-  transition: all 0.2s ease-in-out;
+.sidenav-container {
+  flex: 1;
+}
 
-  &:hover {
-    background-color: #6c7ae0;
-  }
+.is-mobile .side-nav-container {
+  flex: 1 0 auto;
+}
 
-  &:active {
-    background-color: #0015cc;
-  }
+mat-expansion-panel.flat {
+  box-shadow: none;
 
-  &:focus {
-    background-color: #6c7ae0;
-  }
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+::ng-deep .mat-expansion-panel-body {
+  padding-bottom: 0 !important;
 }

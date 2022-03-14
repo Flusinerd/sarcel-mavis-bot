@@ -1,0 +1,7 @@
+<ng-container *ngIf='user'>
+  <div id='name'>
+    <span>{{user.username}}</span>
+    <span class='discriminator'>#{{user.discriminator}}</span>
+  </div>
+  <img  [src]='"https://cdn.discordapp.com/avatars/" + user.id + "/" + user.avatar + ".png?size=32"' alt=''>
+</ng-container>

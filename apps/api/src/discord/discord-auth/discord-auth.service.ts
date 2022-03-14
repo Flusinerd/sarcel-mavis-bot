@@ -4,9 +4,11 @@ import { DiscordTokenExchangeRequestDto } from './dto/discord/token-exchange-req
 import { ConfigService } from '@nestjs/config';
 import { TokenExchangeRequestDto } from './dto/token-exchange-request.dto';
 import { AccessTokenResponseDto } from './dto/discord/access-token-response.dto';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { URLSearchParams} from 'url';
+import { RefreshTokenRequestDto } from './dto/refresh-token.dto';
+import { DiscordRefreshTokenRequestDto } from './dto/discord/refresh-token-request.dto';
 
 @Injectable()
 export class DiscordAuthService {
@@ -51,5 +53,34 @@ export class DiscordAuthService {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       })
+  }
+
+  refreshToken(
+    request: RefreshTokenRequestDto
+  ) {
+    const url = 'https://discord.com/api/v9/oauth2/token';
+    const body = new DiscordRefreshTokenRequestDto(
+      request.refreshToken,
+      this.client_id,
+      this.client_secret
+    );
+
+    const params = new URLSearchParams()
+    params.append('grant_type', 'refresh_token');
+    params.append('refresh_token', body.refresh_token);
+    params.append('client_id', body.client_id);
+    params.append('client_secret', body.client_secret);
+
+    return this.httpService
+      .post<AccessTokenResponseDto>(url, params, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }).pipe(
+        catchError(error => {
+          console.log(error);
+          return throwError(error);
+        })
+      )
   }
 }

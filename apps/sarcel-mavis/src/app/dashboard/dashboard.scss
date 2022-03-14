@@ -1,0 +1,30 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 1.5rem;
+  width: 100%;
+
+  button.dashboard-button {
+    padding: 0.5rem;
+  }
+}
+
+.dashboard-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  margin-bottom: 1.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  span.dashboard-row-subtitle {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-left: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+}

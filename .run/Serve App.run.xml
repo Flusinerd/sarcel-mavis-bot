@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Serve App" type="CompoundRunConfigurationType">
+    <toRun name="serve api" type="NodeJSConfigurationType" />
+    <toRun name="serve frontend" type="NodeJSConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

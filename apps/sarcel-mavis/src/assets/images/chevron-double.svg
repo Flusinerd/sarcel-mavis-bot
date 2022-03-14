@@ -1,0 +1,19 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.96 336">
+  <defs>
+    <style>
+      .chevron-light, .chevron-dark{
+        fill:none;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+        stroke-width:48px;
+        stroke: #000;
+      }
+
+      .chevron-light{
+        opacity: 0.5;
+      }
+    </style>
+  </defs>
+  <path class='chevron-dark' d="M234.48,112l144,144-144,144" transform="translate(-109.52 -88)"/>
+  <path class='chevron-light' d="M133.52,112l144,144-144,144" transform="translate(-109.52 -88)"/>
+</svg>

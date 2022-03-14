@@ -1,0 +1,5 @@
+{
+  "peerDependencies": {
+    "angular-animations": "^0.11.0"
+  }
+}

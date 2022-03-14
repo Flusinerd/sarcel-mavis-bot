@@ -1,0 +1,23 @@
+<ng-container *ngIf='($data | async)?.categories as categories'>
+  <mat-card *ngFor='let category of categories' class='w-100'>
+    <mat-card-header>
+      <mat-card-title>
+        <h1>{{category.name}}</h1>
+      </mat-card-title>
+      <mat-card-subtitle *ngIf='category.description'>
+        {{category.description}}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class=''>
+      <div *ngFor='let row of category.rows' class='dashboard-row'>
+        <span class='dashboard-row-subtitle'>{{row.letter}}</span>
+        <div class='dashboard-grid'>
+          <button *ngFor='let sound of row.sounds' class='dashboard-button' color='primary' mat-flat-button (click)='onSoundClick(sound)'>
+            <span>{{sound.name}}</span>
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

@@ -1,0 +1,7 @@
+<h1 [class.closed]='this.delayedClass | async'>
+  <ng-content></ng-content>
+</h1>
+
+<button class='icon-button' [class.closed]='this.sidebarService.$isClosed | async' (click)='this.sidebarService.isClosed = !this.sidebarService.isClosed'>
+  <img src="/assets/images/chevron-double.svg">
+</button>

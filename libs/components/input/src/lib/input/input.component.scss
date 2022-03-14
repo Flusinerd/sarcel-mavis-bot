@@ -1,0 +1,41 @@
+input {
+  border-radius: 4px;
+  border: none;
+  padding: 0.5rem 1rem;
+  background-color: var(--gray-700);
+  color: var(--light-200);
+
+  transition: box-shadow .2s ease-in-out;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary);
+  }
+
+  &::placeholder {
+    color: var(--light-600);
+  }
+
+  &.error {
+    box-shadow: 0 0 0 2px var(--danger);
+  }
+
+  &:disabled {
+    background-color: var(--gray-300);
+    color: var(--light-600);
+    cursor: not-allowed;
+  }
+}
+
+label {
+  margin-left: 2px;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+svg{
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  color: var(--danger);
+}

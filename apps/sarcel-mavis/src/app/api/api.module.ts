@@ -6,7 +6,11 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { ApiService } from './services/api.service';
 import { DiscordService } from './services/discord.service';
+import { IdentityService } from './services/identity.service';
 import { AuthService } from './services/auth.service';
+import { AudioFilesCategoriesService } from './services/audio-files-categories.service';
+import { AudioFilesService } from './services/audio-files.service';
+import { BotService } from './services/bot.service';
 
 /**
  * Module that provides all services and configuration.
@@ -18,7 +22,11 @@ import { AuthService } from './services/auth.service';
   providers: [
     ApiService,
     DiscordService,
+    IdentityService,
     AuthService,
+    AudioFilesCategoriesService,
+    AudioFilesService,
+    BotService,
     ApiConfiguration
   ],
 })

@@ -1,0 +1,10 @@
+<a href='javascript:' (click)='toggleContent()'>
+  <img *ngIf='icon' [src]='icon' style='margin-left: 1.75rem;'>
+  <div *ngIf='(delayedClass | async) === false' class='open-container'>
+    <span>{{title}}</span>
+    <img src='/assets/images/chevron-forward-outline.svg' [@rotate]='contentVisible'>
+  </div>
+</a>
+<div class='content' *ngIf='contentVisible' [@expandOnEnter] [@collapseOnLeave]>
+  <ng-content></ng-content>
+</div>

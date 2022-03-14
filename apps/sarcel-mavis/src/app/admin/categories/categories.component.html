@@ -1,0 +1,59 @@
+<mat-card id='listCard'>
+  <mat-card-header>
+    <mat-card-title>
+      <h2>Categories</h2>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+<!--    <mat-form-field style='margin-left: 1rem;'>-->
+<!--      <mat-label>Category</mat-label>-->
+<!--      <input type='search' matInput placeholder="Search">-->
+<!--      <mat-icon matSuffix>search</mat-icon>-->
+<!--    </mat-form-field>-->
+    <mat-action-list>
+      <mat-list-item *ngFor='let category of categories$ | async' [routerLink]='["/admin", "categories", category.id]'>
+        <h3 matLine>{{ category.name }}</h3>
+        <p matLine>{{ category.description }}</p>
+      </mat-list-item>
+    </mat-action-list>
+  </mat-card-content>
+</mat-card>
+
+<mat-card style='min-width: 500px'>
+  <ng-container *ngIf='(selectedCategory$ | async) !== undefined ' >
+  <mat-card-header >
+    <mat-card-title>
+      <h2>Edit category</h2>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <h3>{{ (selectedCategory$ | async)!.name }} - {{ (selectedCategory$ | async)!.description }}</h3>
+    </mat-card-subtitle>
+  </mat-card-header>
+    <mat-card-content>
+
+      <form [formGroup]='categoryForm' (ngSubmit)='onSubmit()' class='vertical-form card-form w-100'>
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput formControlName='name' placeholder="Name">
+
+          <!-- Errors -->
+          <mat-error *ngIf='categoryForm.get("name")?.hasError("required")'>
+            Name is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf='categoryForm.get("name")?.hasError("maxlength")'>
+            Name must be at most <strong>50</strong> characters long.
+          </mat-error>
+          <mat-error *ngIf='categoryForm.get("name")?.hasError("nameExists")'>
+            Name already taken.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <input matInput formControlName='description' placeholder="Description">
+        </mat-form-field>
+        <button mat-raised-button color='primary' type='submit' [disabled]='!this.categoryForm.valid'>Save</button>
+      </form>
+
+    </mat-card-content>
+  </ng-container>
+</mat-card>

@@ -18,7 +18,10 @@
           "apps/sarcel-mavis/src/favicon.ico",
           "apps/sarcel-mavis/src/assets"
         ],
-        "styles": ["apps/sarcel-mavis/src/styles.scss"],
+        "styles": [
+          "apps/sarcel-mavis/src/styles.scss",
+          "libs/components/assets/styles.css"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -93,7 +96,7 @@
       }
     },
     "codegen": {
-      "builder": "@nrwl/workspace:run-commands",
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
         "commands": ["ng-openapi-gen"],
         "cwd": "apps/sarcel-mavis"
