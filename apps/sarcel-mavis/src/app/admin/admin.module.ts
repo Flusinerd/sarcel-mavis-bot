@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CreateCategoryDialogComponent } from './categories/create-category-dialog/create-category-dialog.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     ManageUsersComponent,
     ManageSoundsComponent,
     ServerSettingsComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    CreateCategoryDialogComponent
   ],
   imports: [
     CommonModule,

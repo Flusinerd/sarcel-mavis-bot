@@ -110,3 +110,10 @@ form.card-form {
 .col-span-3 {
   grid-column: span 3;
 }
+
+button.fab{
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 100;
+}

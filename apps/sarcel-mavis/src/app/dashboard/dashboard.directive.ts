@@ -1,7 +1,7 @@
 import { Directive, OnInit } from '@angular/core';
 import { AudioFileDto } from '../api/models/audio-file-dto';
 import { AudioFilesService } from '../api/services/audio-files.service';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BotService } from '../api/services/bot.service';
 
@@ -24,8 +24,13 @@ export class DashboardDirective implements OnInit {
   }
 
 
-  onSoundClick(audioFile: AudioFileDto): void {
-    console.log(audioFile);
+  async onSoundClick(audioFile: AudioFileDto): Promise<void> {
+    await lastValueFrom(this._botService.playSound({
+      body: {
+        soundId: audioFile.id,
+        userId: '1'
+      }
+    }))
   }
 
 }
@@ -49,6 +54,7 @@ class Dashboard {
           // Otherwise, create a new category and add the audio file to it
           const newCat = new Category(category.id, category.name, category.description).addAudioFile(letter, cur);
           acc.push(newCat);
+          acc.sort((a, b) => a.name.localeCompare(b.name));
         }
       }
       return acc;

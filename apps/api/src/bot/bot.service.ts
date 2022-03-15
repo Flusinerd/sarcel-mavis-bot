@@ -6,9 +6,16 @@ import { Client, Guild, Intents, Interaction } from 'discord.js';
 import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from '@discordjs/builders';
 import { OtonCommands } from './oton-commands';
 import { FilesService } from '../files/files.service';
-import { AudioPlayer, createAudioPlayer, createAudioResource, joinVoiceChannel } from '@discordjs/voice';
+import {
+  AudioPlayer,
+  AudioPlayerStatus,
+  createAudioPlayer,
+  createAudioResource,
+  joinVoiceChannel
+} from '@discordjs/voice';
 import { AudioFilesService } from '../audio-files/audio-files.service';
 import { PresenceCommands } from './presence-commands';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class BotService {
@@ -20,6 +27,12 @@ export class BotService {
   private client?: Client;
 
   private _player = createAudioPlayer();
+
+  private _$botStatus = new BehaviorSubject<PLAYER_STATE>(PLAYER_STATE.STOPPED);
+
+  get $botStatus() {
+    return this._$botStatus.asObservable();
+  }
 
   private _commands: {
     data: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder;
@@ -52,6 +65,15 @@ export class BotService {
     this._guildId = guildId;
     this._commands = this._commands.concat(new OtonCommands().commands);
     this._commands = this._commands.concat(new PresenceCommands().commands);
+    this._player.on('stateChange', (oldState, newState) => {
+      if (newState.status === AudioPlayerStatus.Idle) {
+        this._$botStatus.next(PLAYER_STATE.STOPPED);
+      } else if (newState.status === AudioPlayerStatus.Playing) {
+        this._$botStatus.next(PLAYER_STATE.PLAYING);
+      } else if (newState.status === AudioPlayerStatus.Paused) {
+        this._$botStatus.next(PLAYER_STATE.PAUSED);
+      }
+    });
     // noinspection JSIgnoredPromiseFromCall
     this._start(token);
   }
@@ -116,4 +138,37 @@ export class BotService {
     this._player.play(resource);
   }
 
+  public pauseSound(userId: string) {
+    const guild = this.client.guilds.cache.get(this._guildId);
+    const voiceChannel = guild.members.cache.get(userId).voice.channel;
+    if (!voiceChannel) {
+      throw new BadRequestException('User is not in a voice channel');
+    }
+    this._player.pause();
+  }
+
+  public resumeSound(userId: string) {
+    const guild = this.client.guilds.cache.get(this._guildId);
+    const voiceChannel = guild.members.cache.get(userId).voice.channel;
+    if (!voiceChannel) {
+      throw new BadRequestException('User is not in a voice channel');
+    }
+    this._player.unpause();
+  }
+
+  public stopSound(userId: string) {
+    const guild = this.client.guilds.cache.get(this._guildId);
+    const voiceChannel = guild.members.cache.get(userId).voice.channel;
+    if (!voiceChannel) {
+      throw new BadRequestException('User is not in a voice channel');
+    }
+    this._player.stop();
+  }
+
+}
+
+enum PLAYER_STATE {
+  PLAYING = 'PLAYING',
+  PAUSED = 'PAUSED',
+  STOPPED = 'STOPPED',
 }

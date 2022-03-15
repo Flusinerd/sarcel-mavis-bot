@@ -1,13 +1,27 @@
-<div class="sidebar-container" [class.is-mobile]="mobileQuery.matches">
-  <mat-toolbar color="primary" class="toolbar">
-    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1 class="example-app-name">Sarcel Mavis</h1>
+<div [class.is-mobile]='mobileQuery.matches' class='sidebar-container'>
+  <mat-toolbar class='toolbar' color='primary'>
+    <button (click)='snav.toggle()' mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class='example-app-name'>Sarcel Mavis</h1>
+
+    <div class='playback-controls'>
+      <button mat-icon-button *ngIf='(botStatusService.$botStatus | async) === PLAYER_STATE.PAUSED' (click)='onResume()'>
+        <mat-icon>play_arrow</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf='(botStatusService.$botStatus | async) === PLAYER_STATE.PLAYING' (click)='onPause()'>
+        <mat-icon>pause</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf='(botStatusService.$botStatus | async) === PLAYER_STATE.PLAYING || (botStatusService.$botStatus | async) === PLAYER_STATE.PAUSED' (click)='onStop()'>
+        <mat-icon>stop</mat-icon>
+      </button>
+    </div>
   </mat-toolbar>
 
-  <mat-sidenav-container class="sidenav-container"
-                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
-                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" opened='true'>
+  <mat-sidenav-container [style.marginTop.px]='mobileQuery.matches ? 56 : 0'
+                         class='sidenav-container'>
+    <mat-sidenav #snav [fixedInViewport]='mobileQuery.matches'
+                 [mode]="mobileQuery.matches ? 'over' : 'side'" fixedTopGap='56' opened='true'>
       <mat-nav-list style='min-width: 250px'>
         <mat-accordion>
 
@@ -42,14 +56,14 @@
                 <span>Admin</span>
               </mat-panel-title>
             </mat-expansion-panel-header>
-<!--            <a mat-list-item routerLink='/admin/users' routerLinkActive='active'>-->
-<!--              <mat-icon>people</mat-icon>-->
-<!--              <span>Users</span>-->
-<!--            </a>-->
-<!--            <a mat-list-item routerLink='/admin/roles' routerLinkActive='active'>-->
-<!--              <mat-icon>security</mat-icon>-->
-<!--              <span>Roles</span>-->
-<!--            </a>-->
+            <!--            <a mat-list-item routerLink='/admin/users' routerLinkActive='active'>-->
+            <!--              <mat-icon>people</mat-icon>-->
+            <!--              <span>Users</span>-->
+            <!--            </a>-->
+            <!--            <a mat-list-item routerLink='/admin/roles' routerLinkActive='active'>-->
+            <!--              <mat-icon>security</mat-icon>-->
+            <!--              <span>Roles</span>-->
+            <!--            </a>-->
             <a mat-list-item routerLink='/admin/categories' routerLinkActive='active'>
               <mat-icon>category</mat-icon>
               <span>Categories</span>
@@ -57,21 +71,22 @@
             <a mat-list-item routerLink='/admin/sounds/manage' routerLinkActive='active'>
               <mat-icon>graphic_eq</mat-icon>
               <span>Manage sounds</span>
-            </a>            <a mat-list-item routerLink='/admin/sounds/upload' routerLinkActive='active'>
-              <mat-icon>file_upload</mat-icon>
-              <span>Upload sounds</span>
-            </a>
+            </a> <a mat-list-item routerLink='/admin/sounds/upload' routerLinkActive='active'>
+            <mat-icon>file_upload</mat-icon>
+            <span>Upload sounds</span>
+          </a>
           </mat-expansion-panel>
-
 
 
         </mat-accordion>
 
-<!--        <a mat-list-item routerLink=".">Moin</a>-->
-<!--        <mat-divider></mat-divider>-->
-<!--        <a mat-list-item routerLink=".">Moin</a>-->
-<!--        <mat-divider></mat-divider>-->
+        <!--        <a mat-list-item routerLink=".">Moin</a>-->
+        <!--        <mat-divider></mat-divider>-->
+        <!--        <a mat-list-item routerLink=".">Moin</a>-->
+        <!--        <mat-divider></mat-divider>-->
       </mat-nav-list>
+      <button (click)='login()' color='primary' mat-flat-button class='login-button' *ngIf='(authService.$isLoggedIn | async) === false'> Login </button>
+      <button (click)='logout()' color='primary' mat-flat-button class='login-button' *ngIf='(authService.$isLoggedIn | async) === true'> Logout </button>
     </mat-sidenav>
 
     <mat-sidenav-content>
@@ -79,7 +94,6 @@
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
-
 
 
 <sarcel-mavis-loading *ngIf='loadingService.$isLoading | async'></sarcel-mavis-loading>

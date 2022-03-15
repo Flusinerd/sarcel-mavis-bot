@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { BotStatusService } from './bot-status.service';
 
 const routes: Routes = [
   {
@@ -58,7 +59,7 @@ console.log('Base URI: ' + baseURI);
     MatExpansionModule
   ],
   providers: [
-    AuthenticationInterceptorProvider
+    AuthenticationInterceptorProvider,
   ],
   bootstrap: [AppComponent]
 })

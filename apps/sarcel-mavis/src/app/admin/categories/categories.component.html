@@ -3,6 +3,9 @@
     <mat-card-title>
       <h2>Categories</h2>
     </mat-card-title>
+    <mat-card-subtitle>
+      <h3>Select a category to edit</h3>
+    </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
 <!--    <mat-form-field style='margin-left: 1rem;'>-->
@@ -19,8 +22,7 @@
   </mat-card-content>
 </mat-card>
 
-<mat-card style='min-width: 500px'>
-  <ng-container *ngIf='(selectedCategory$ | async) !== undefined ' >
+<mat-card style='min-width: 500px' *ngIf='(selectedCategory$ | async) !== undefined '>
   <mat-card-header >
     <mat-card-title>
       <h2>Edit category</h2>
@@ -55,5 +57,9 @@
       </form>
 
     </mat-card-content>
-  </ng-container>
 </mat-card>
+
+
+<button mat-fab class='fab'>
+  <mat-icon>add</mat-icon>
+</button>

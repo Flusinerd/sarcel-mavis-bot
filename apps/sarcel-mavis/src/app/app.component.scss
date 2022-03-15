@@ -1,4 +1,4 @@
-:host{
+:host {
   display: block;
 }
 
@@ -35,4 +35,15 @@ mat-expansion-panel.flat {
 
 ::ng-deep .mat-expansion-panel-body {
   padding-bottom: 0 !important;
+}
+
+.login-button {
+  position: absolute;
+  bottom: 2rem;
+  left: 1rem;
+  width: calc(100% - 2rem);
+}
+
+.playback-controls{
+  margin-left: auto;
 }

@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 import { getDirtyValues } from '../../common/get-dirty-values';
 import { map } from 'rxjs/operators';
+import { nameExistsValidator } from './name-exists.validator';
 
 @Component({
   selector: 'sarcel-mavis-categories',
@@ -43,7 +44,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   categoryForm = this._fb.group({
-    name: ['', [Validators.required, Validators.maxLength(50)], nameExistsValidator(this.categories$, this.selectedCategory$)],
+    name: ['', [Validators.required, Validators.maxLength(50)], nameExistsValidator(this.categories$, this.selectedCategory$.pipe(map(category => category?.name)))],
     description: ['',  Validators.maxLength(255)],
   })
 
@@ -109,24 +110,4 @@ export class CategoriesComponent implements OnInit {
       }
     });
   }
-}
-
-function nameExistsValidator(existing: Observable<AudioFileCategoryDto[]>, selected: Observable<AudioFileCategoryDto | undefined>): AsyncValidatorFn {
-  return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-    return combineLatest([existing, selected]).pipe(
-      map(([categories, selected]) => {
-        const name = control.value;
-        if (!name) {
-          return null;
-        }
-        if (selected && selected.name === name) {
-          return null;
-        }
-        const exists = categories.find(c => c.name === name);
-        return exists ? { nameExists: true } : null;
-      }),
-      take(1)
-    );
-  };
-
 }

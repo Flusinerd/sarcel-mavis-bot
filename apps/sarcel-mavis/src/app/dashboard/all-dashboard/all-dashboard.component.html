@@ -1,5 +1,5 @@
 <ng-container *ngIf='($data | async)?.categories as categories'>
-  <mat-card *ngFor='let category of categories' class='w-100'>
+  <mat-card *ngFor='let category of categories'>
     <mat-card-header>
       <mat-card-title>
         <h1>{{category.name}}</h1>

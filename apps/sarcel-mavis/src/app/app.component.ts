@@ -4,11 +4,12 @@ import { LoadingService } from './loading/loading.service';
 import { ToastrService } from 'ngx-toastr';
 import { DiscordService } from './api/services/discord.service';
 import { DiscordUserDto } from './api/models/discord-user-dto';
-import { delay, lastValueFrom, retry, retryWhen} from 'rxjs';
-import { NavigationEnd, Router } from '@angular/router';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { SidebarService } from '../../../../libs/components/nav-bar/src/lib/sidebar/sidebar.service';
 import { MediaMatcher } from '@angular/cdk/layout';
+import { BotStatusService, PLAYER_STATE } from './bot-status.service';
+import { BotService } from './api/services/bot.service';
 
 @Component({
   selector: 'sarcel-mavis-root',
@@ -17,17 +18,10 @@ import { MediaMatcher } from '@angular/cdk/layout';
 })
 export class AppComponent implements OnInit {
   mobileQuery: MediaQueryList;
-
   private readonly _mobileQueryListener: () => void;
-
   private _userData?: DiscordUserDto
 
-  public adminPopupVisibility = false;
-  private _isAdminRoute = false;
-  get isAdminRoute(): boolean {
-    return this._isAdminRoute;
-  }
-
+  public PLAYER_STATE = PLAYER_STATE;
 
   get userData(): DiscordUserDto | undefined {
     return this._userData
@@ -38,9 +32,10 @@ export class AppComponent implements OnInit {
               private readonly toastr: ToastrService,
               private readonly discordService: DiscordService,
               private readonly router: Router,
-              public readonly sidebarService: SidebarService,
               media: MediaMatcher,
-              private readonly _changeDetectorRef: ChangeDetectorRef
+              private readonly _changeDetectorRef: ChangeDetectorRef,
+              public readonly botStatusService: BotStatusService,
+              private readonly _botService: BotService
               ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => _changeDetectorRef.detectChanges();
@@ -51,40 +46,29 @@ export class AppComponent implements OnInit {
     window.location.href = this.authService.generateAuthUrl();
   }
 
-  @HostListener('window:click', ['$event'])
-  onClick(event: MouseEvent) {
-    // If the user clicks outside of the popup, close it
-    // Don't close it if the user clicks on the popup itself or on the close button
-    const target = event.target as HTMLElement;
-    if (this.adminPopupVisibility && event && !target.closest('.admin-popup') && !target.closest('.admin-popup-handler')) {
-      this.adminPopupVisibility = false;
-    }
-  }
-
-  ngOnInit() {
-    //this.getUserData()
+  async ngOnInit() {
     this.loadingService.$isLoading.subscribe(() => {
       this._changeDetectorRef.detectChanges();
     })
-    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((event) => {
-      const typedEvent = event as NavigationEnd;
-      this.adminPopupVisibility = false;
-      if (typedEvent.url.includes('/admin')) {
-        this._isAdminRoute = true;
-        console.log('Is admin route')
-      }
+    this.botStatusService.$botStatus.subscribe(() => {
+      this._changeDetectorRef.detectChanges();
     })
+    await this.getUserData()
+  }
+
+  login() {
+    window.location.href = this.authService.generateAuthUrl();
   }
 
   private async getUserData() {
-    this.loadingService.isLoading = true;
+    // Wait for isLoggedIn to be true
+    await firstValueFrom(this.authService.$isLoggedIn.pipe(filter(isLoggedIn => isLoggedIn)))
     try {
+    this.loadingService.isLoading = true;
       this._userData = await lastValueFrom(
         this.discordService.getIdentity()
-          .pipe(
-            retryWhen(errors => errors.pipe(delay(1000), retry(3))),
-          )
       )
+      console.log('User data', this._userData)
     } catch (error) {
       console.error(error);
       this.toastr.error('Failed to get user data');
@@ -96,5 +80,15 @@ export class AppComponent implements OnInit {
     this.authService.logout();
   }
 
+  public async onResume() {
+    await lastValueFrom(this._botService.resumeSound())
+  }
 
+  public async onPause() {
+    await lastValueFrom(this._botService.pauseSound())
+  }
+
+  public async onStop() {
+    await lastValueFrom(this._botService.stopSound())
+  }
 }

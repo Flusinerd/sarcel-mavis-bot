@@ -40,11 +40,14 @@ export class AuthService {
     @Inject(DOCUMENT) private document: Document,
     private readonly discordService: DiscordService
   ) {
+    this._isLoggedIn.subscribe((isLoggedIn) => {
+      console.log('Is logged in', isLoggedIn);
+    });
     this.baseURI = document.baseURI;
     this.redirectURI = `${this.baseURI}auth/cb`;
     this._loadFromLocalStorage();
-    console.log('Is logged in', this._isLoggedIn.getValue());
   }
+
 
 
   private static validateState(state: string): boolean {

@@ -20,6 +20,11 @@ export class OtonCommands {
         .addSubcommand(command =>
           command.setName('play')
             .setDescription('Plays a (random) O-Ton')
+            .addStringOption(option =>
+              option.setName('file')
+                .setDescription('The file to play')
+                .setRequired(false)
+            )
         )
       ,
       async execute(interaction: Interaction, guild: Guild, filesService: FilesService, player: AudioPlayer, otonService: AudioFilesService) {
@@ -49,15 +54,23 @@ export class OtonCommands {
           return;
         }
 
-        // Pick a random file, that is not the last played file
-        let isSameFile = false;
-        let pickedFile: AudioFileDto;
-        do {
-          pickedFile = files[Math.floor(Math.random() * files.length)];
-          isSameFile = pickedFile.name === OtonCommands.lastPlayed;
-        } while (isSameFile);
+        // Check if a file was specified
+        const fileOption = interaction.options.getString('file');
+        let fileToPlay: AudioFileDto;
+        if (!fileOption) {
+          // Get a random file
+          // Pick a random file, that is not the last played file
+          let isSameFile = false;
+          do {
+            fileToPlay = files[Math.floor(Math.random() * files.length)];
+            isSameFile = fileToPlay.name === OtonCommands.lastPlayed;
+          } while (isSameFile);
+        } else {
+          // Get the file specified
+          fileToPlay = files.find(file => file.name === fileOption);
+        }
 
-        const file = await filesService.getFileUrl(pickedFile.key);
+        const file = await filesService.getFileUrl(fileToPlay.key);
 
         const resource = createAudioResource(file, {
           inlineVolume: true
@@ -73,7 +86,7 @@ export class OtonCommands {
 
         player.play(resource);
 
-        await interaction.reply('O-Ton!');
+        await interaction.reply(`Playing **${fileToPlay.name}**`);
       }
     },
     {
